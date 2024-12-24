@@ -14,6 +14,10 @@ export const DISCORD_CONSTANTS = {
     GUILD_MESSAGES: GatewayIntentBits.GuildMessages,
     MESSAGE_CONTENT: GatewayIntentBits.MessageContent,
     GUILD_VOICE_STATES: GatewayIntentBits.GuildVoiceStates,
+    GUILD_INTEGRATIONS: GatewayIntentBits.GuildIntegrations,
+    GUILD_PRESENCES: GatewayIntentBits.GuildPresences, // 멤버 상태 확인
+    GUILD_MESSAGE_REACTIONS: GatewayIntentBits.GuildMessageReactions, // 메시지 반응
+    GUILD_EMOJIS_AND_STICKERS: GatewayIntentBits.GuildEmojisAndStickers, // 이모티콘 및 스티커
   },
   EVENTS: {
     MESSAGE_CREATE: Events.MessageCreate,
@@ -28,10 +32,10 @@ export const DISCORD_CONSTANTS = {
   },
   ROLE_GROUPS: {
     ALL: [
-      DiscordRole.CLAN_MASTER,
-      DiscordRole.CLAN_SERVER_ADMIN,
-      DiscordRole.CLAN_ADMIN,
       DiscordRole.CLAN,
+      DiscordRole.CLAN_ADMIN,
+      DiscordRole.CLAN_SERVER_ADMIN,
+      DiscordRole.CLAN_MASTER,
     ],
     ADMIN: [
       DiscordRole.CLAN_MASTER,

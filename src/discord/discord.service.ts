@@ -24,11 +24,23 @@ export class DiscordService implements OnModuleInit {
       throw new Error('Failed to initialize Discord client');
     }
 
-    await this.commandRegistry.registerCommands(this.client.application.id);
-    this.setupEventHandlers();
+    // Ready 이벤트 핸들러 추가
+    this.client.once('ready', async () => {
+      console.log(`Logged in as ${this.client.user?.tag}!`);
+
+      if (!this.client.application?.id) {
+        throw new Error('Failed to initialize Discord client');
+      }
+
+      await this.commandRegistry.registerCommands(this.client.application.id);
+      await this.setupEventHandlers();
+    });
+
+    // await this.commandRegistry.registerCommands(this.client.application.id);
+    // await this.setupEventHandlers();
   }
 
-  private setupEventHandlers() {
+  private async setupEventHandlers() {
     this.client.on(DISCORD_CONSTANTS.EVENTS.MESSAGE_CREATE, async (message) => {
       if (message.author.bot) return;
       await this.messageHandler.handleMessage(message);

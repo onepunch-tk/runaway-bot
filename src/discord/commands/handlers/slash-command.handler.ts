@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { BaseCommandHandler } from './base-command.handler';
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, GuildMemberRoleManager } from 'discord.js';
 import { CommandContext } from '../types/discord.types';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class SlashCommandHandler extends BaseCommandHandler {
       if (!command) return;
 
       const hasPermission = await this.checkRolePermissions(
-        interaction.member?.roles,
+        interaction.member?.roles as GuildMemberRoleManager,
         command,
       );
 
@@ -28,7 +28,6 @@ export class SlashCommandHandler extends BaseCommandHandler {
       const context: CommandContext = {
         interaction,
       };
-
       await command.handler(context);
     } catch (error) {
       this.logger.error(
