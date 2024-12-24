@@ -6,7 +6,6 @@ export interface DiscordCommandOptions {
   name: string;
   description?: string;
   usage?: string;
-  minRole?: DiscordRole;
 }
 
 export interface CommandContext {

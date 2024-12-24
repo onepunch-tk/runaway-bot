@@ -48,41 +48,14 @@ export abstract class BaseCommandHandler {
    * @param memberRoles - 사용자의 역할 정보 (디스코드 매니저 객체 또는 역할 ID 배열)
    * @param command - 실행하려는 명령어 정보
    * @returns 권한 있으면 true, 없으면 false
-   */
-  protected async checkRolePermissions(
-    memberRoles: GuildMemberRoleManager | string[],
+   */ protected async checkRolePermissions(
+    memberRoles: GuildMemberRoleManager,
     command: CommandInfo,
   ): Promise<boolean> {
-    // 명령어에 설정된 최소 역할 또는 기본 역할 그룹 가져오기
-    const requiredRoles = command.meta.minRole
-      ? this.getRolesFromMinRole(command.meta.minRole)
-      : DISCORD_CONSTANTS.ROLE_GROUPS.ALL;
-
-    // 명령어에 직접 지정된 역할이 있으면 그 역할 사용, 없으면 필수 역할 사용
-    const allowedRoles = command.roleIds || requiredRoles;
-
     if (!memberRoles) return false;
 
-    // memberRoles 타입에 따라 다른 방식으로 역할 확인
-    if (Array.isArray(memberRoles)) {
-      // string[] 타입일 때 - 역할 ID 직접 비교
-      return allowedRoles.some((roleId) => memberRoles.includes(roleId));
-    } else {
-      // GuildMemberRoleManager 타입일 때 - cache에서 역할 확인
-      return allowedRoles.some((roleId) => memberRoles.cache.has(roleId));
-    }
-  }
-
-  /**
-   * 지정된 최소 역할부터 상위 역할까지의 배열 반환
-   * @param minRole - 최소 필요 역할
-   * @returns 최소 역할부터 최상위 역할까지의 배열
-   */
-  private getRolesFromMinRole(minRole: DiscordRole): DiscordRole[] {
-    const allRoles = DISCORD_CONSTANTS.ROLE_GROUPS.ALL;
-    const minRoleIndex = allRoles.indexOf(minRole);
-
-    // 최소 역할부터 배열 끝까지 잘라서 반환 (상위 역할들 포함)
-    return allRoles.slice(0, minRoleIndex + 1);
+    // 1. 특정 역할이 지정된 경우 해당 역할만 체크
+    const requiredRoles = command.roleIds || DISCORD_CONSTANTS.ROLE_GROUPS.ALL;
+    return requiredRoles.some((roleId) => memberRoles.cache.has(roleId));
   }
 }
