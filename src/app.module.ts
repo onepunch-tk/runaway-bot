@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { DiscordModule } from './discord/discord.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ClanController } from './clan/clan.controller';
 import * as Joi from 'joi';
 
 @Module({
@@ -20,5 +21,6 @@ import * as Joi from 'joi';
     DiscordModule,
     AuthModule,
   ],
+  controllers: [ClanController],
 })
 export class AppModule {}
