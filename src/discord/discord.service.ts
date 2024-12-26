@@ -27,11 +27,6 @@ export class DiscordService implements OnModuleInit {
     // Ready 이벤트 핸들러 추가
     this.client.once('ready', async () => {
       console.log(`Logged in as ${this.client.user?.tag}!`);
-
-      if (!this.client.application?.id) {
-        throw new Error('Failed to initialize Discord client');
-      }
-
       await this.commandRegistry.registerCommands(this.client.application.id);
       await this.setupEventHandlers();
     });

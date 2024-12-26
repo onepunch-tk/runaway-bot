@@ -14,7 +14,7 @@ export class ClanController {
   @Command({
     prefix: '/',
     name: '가입',
-    description: '클랜원 등록 (맨션으로 대상 지정) (예: /가입 @아무개)',
+    description: '클랜원 등록 (옵션에서 "user" 선택) (예: /가입 user:아무개)',
   })
   @Roles([
     DiscordRole.CLAN_MASTER,
@@ -22,14 +22,14 @@ export class ClanController {
     DiscordRole.CLAN_SERVER_ADMIN,
   ])
   @RequireUser() // Command 데코레이터 아래로 이동
-  async register(context: CommandContext) {
-    await this.clanService.registerClan(context);
+  async registerClanMember(context: CommandContext) {
+    await this.clanService.registerClanMember(context);
   }
 
   @Command({
     prefix: '/',
     name: '탈퇴',
-    description: '클랜원 제명 (맨션으로 대상 지정) (예: /탈퇴 @아무개)',
+    description: '클랜원 제명 (옵션에서 "user" 선택) (예: /탈퇴 user:아무개)',
   })
   @Roles([
     DiscordRole.CLAN_MASTER,
@@ -37,7 +37,32 @@ export class ClanController {
     DiscordRole.CLAN_SERVER_ADMIN,
   ])
   @RequireUser() // Command 데코레이터 아래로 이동
-  async delete(context: CommandContext) {
-    await this.clanService.deleteClan(context);
+  async deleteClanMember(context: CommandContext) {
+    await this.clanService.deleteClanMember(context);
+  }
+
+  @Command({
+    prefix: '/',
+    name: '등업',
+    description:
+      'Clan 관리자로 등업 신청 (옵션에서 "user" 선택) (예: /등업 user:아무개)',
+  })
+  @Roles([
+    DiscordRole.CLAN_MASTER,
+    DiscordRole.CLAN_ADMIN,
+    DiscordRole.CLAN_SERVER_ADMIN,
+  ])
+  @RequireUser() // Command 데코레이터 아래로 이동
+  async updateMemberRole(context: CommandContext) {
+    await this.clanService.updateMemberRole(context);
+  }
+
+  @Command({
+    prefix: '/',
+    name: '클랜',
+    description: '클랜 멤버 목록 조회',
+  })
+  async getClanMembers(context: CommandContext) {
+    await this.clanService.getClanMembers(context);
   }
 }

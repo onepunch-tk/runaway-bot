@@ -14,6 +14,13 @@ export const MESSAGE_CONSTANTS = {
       failTitle: '❌ 탈퇴 처리 실패',
       actionName: '탈퇴',
     },
+    UPDATE: {
+      title: '⚠️ 등업 불가',
+      successTitle: '⭐ 클랜 등업 완료',
+      successColor: '#4B9EFF', // 파란색 계열로 설정
+      failTitle: '❌ 등업 처리 실패',
+      actionName: '등업',
+    },
   },
 };
 

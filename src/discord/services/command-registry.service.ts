@@ -69,15 +69,26 @@ export class CommandRegistryService {
     }
 
     await this.registerSlashCommands(applicationId, slashCommands);
+    console.log(
+      '등록된 명령어들:',
+      slashCommands.map((cmd) => cmd.name),
+    );
   }
 
   private async registerSlashCommands(applicationId: string, commands: any[]) {
     try {
       // 글로벌 커맨드 대신 특정 길드에 등록
       const guildId = '1218141133696270356'; // 테스트 서버 ID
+
+      // await this.rest.put(Routes.applicationCommands(applicationId), {
+      //   body: [],
+      // });
+
       await this.rest.put(
         Routes.applicationGuildCommands(applicationId, guildId),
-        { body: commands },
+        {
+          body: commands,
+        },
       );
 
       // 또는 여러 길드에 동시 등록
