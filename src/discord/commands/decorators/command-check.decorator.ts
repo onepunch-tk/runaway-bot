@@ -19,6 +19,16 @@ export function RequireUser() {
 
       if (context.interaction.isChatInputCommand()) {
         const targetUser = context.interaction.options.getUser('user');
+
+        //Bot 일 경우
+        if (targetUser.bot) {
+          await context.interaction.reply({
+            content: "대상 유저가 '봇' 일 수 없습니다.",
+            ephemeral: true,
+          });
+          return;
+        }
+
         if (!targetUser) {
           await context.interaction.reply({
             content: '대상 유저를 멘션해주세요.',
