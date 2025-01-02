@@ -9,6 +9,7 @@ import {
 } from './common/constant/env.constant';
 import { MessageService } from './discord/services/message.service';
 import { InteractionService } from './discord/services/interaction.service';
+import { UtilityService } from './utility/utility.service';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -20,6 +21,7 @@ export class AppService implements OnModuleInit {
     private readonly configService: ConfigService,
     private readonly messageService: MessageService,
     private readonly interactionService: InteractionService,
+    private readonly utilityService: UtilityService,
   ) {
     this.client = new Client({
       intents: Object.values(DISCORD_CONSTANTS.INTENTS),
@@ -74,6 +76,13 @@ export class AppService implements OnModuleInit {
       async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
         await this.interactionService.handleInteraction(interaction);
+      },
+    );
+
+    this.client.on(
+      DISCORD_CONSTANTS.EVENTS.GUILD_MEMBER_ADD,
+      async (member) => {
+        await this.utilityService.handleWelcomeMessage(member);
       },
     );
   }

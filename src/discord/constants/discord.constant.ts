@@ -22,6 +22,7 @@ export const DISCORD_CONSTANTS = {
   EVENTS: {
     MESSAGE_CREATE: Events.MessageCreate,
     INTERACTION_CREATE: Events.InteractionCreate,
+    GUILD_MEMBER_ADD: Events.GuildMemberAdd,
   },
   METADATA: {
     COMMAND_KEY: 'discord:command',
