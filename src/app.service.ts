@@ -28,7 +28,6 @@ export class AppService implements OnModuleInit {
     this.rest = new REST({ version: '10' }).setToken(
       this.configService.get(DISCORD_BOT_TOKEN),
     );
-    console.log('constructed');
   }
 
   async onModuleInit() {
@@ -81,7 +80,6 @@ export class AppService implements OnModuleInit {
 
   private async registerCommands(applicationId: string) {
     const controllers = this.discoveryService.getControllers();
-    console.log(controllers);
     const slashCommands = [];
     for (const controller of controllers) {
       const instance = controller.instance;
