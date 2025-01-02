@@ -4,16 +4,13 @@ import {
   CommandInfo,
   DiscordCommandOptions,
 } from '../types/discord.types';
-import {
-  DISCORD_CONSTANTS,
-  DiscordRole,
-} from '../../constants/discord.constant';
+import { DISCORD_CONSTANTS, DiscordRole } from '../constants/discord.constant';
 
 /**
  * 디스코드 명령어 처리를 위한 기본 핸들러 클래스
  * 모든 명령어 핸들러는 이 클래스를 상속받아 구현
  */
-export abstract class BaseCommandHandler {
+export abstract class BaseCommandService {
   protected readonly commands = new Map<string, CommandInfo>();
 
   /**

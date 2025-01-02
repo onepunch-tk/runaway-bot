@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { EmbedHandler } from './handlers/embed.handler';
+import { EmbedServices } from './services/embed.services';
 
 @Module({
-  providers: [EmbedHandler],
-  exports: [EmbedHandler],
+  providers: [EmbedServices],
+  exports: [EmbedServices],
 })
 export class CommonModule {}

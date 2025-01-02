@@ -1,5 +1,5 @@
 import { CommandInteraction, Message } from 'discord.js';
-import { DiscordRole } from '../../constants/discord.constant';
+import { DiscordRole } from '../constants/discord.constant';
 
 export interface DiscordCommandOptions {
   prefix: '!' | '/';

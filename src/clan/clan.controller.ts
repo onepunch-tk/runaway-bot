@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { Command } from '../discord/commands/decorators/command.decorator';
+import { Command } from '../discord/decorators/command.decorator';
 import { DiscordRole } from '../discord/constants/discord.constant';
-import { CommandContext } from '../discord/commands/types/discord.types';
+import { CommandContext } from '../discord/types/discord.types';
 import { ClanService } from './clan.service';
-import { RequireUser } from '../discord/commands/decorators/command-check.decorator';
-import { Roles } from '../discord/commands/decorators/roles.decorator';
+import { RequireUser } from '../discord/decorators/command-check.decorator';
+import { Roles } from '../discord/decorators/roles.decorator';
 
 @Controller('clan')
 export class ClanController {

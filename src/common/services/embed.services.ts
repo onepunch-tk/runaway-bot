@@ -6,7 +6,7 @@ import {
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class EmbedHandler {
+export class EmbedServices {
   async sendSuccessEmbed(
     interaction: ChatInputCommandInteraction,
     config: {
