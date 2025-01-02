@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ClanService } from './clan.service';
 import { ClanController } from './clan.controller';
-import { EmbedServices } from '../common/services/embed.services';
+import { CommonModule } from '../common/common.module';
 
 @Module({
-  providers: [ClanService, EmbedServices],
+  imports: [CommonModule],
+  providers: [ClanService],
   controllers: [ClanController],
 })
 export class ClanModule {}
