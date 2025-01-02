@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseCommandHandler } from './base-command.handler';
+import { BaseCommandService } from './base-command.service';
 import { Message } from 'discord.js';
 import { CommandContext } from '../types/discord.types';
 
 @Injectable()
-export class MessageCommandHandler extends BaseCommandHandler {
-  private readonly logger = new Logger(MessageCommandHandler.name);
+export class MessageService extends BaseCommandService {
+  private readonly logger = new Logger(MessageService.name);
 
   async handleMessage(message: Message) {
     try {

@@ -1,4 +1,4 @@
-import { DISCORD_CONSTANTS } from '../../constants/discord.constant';
+import { DISCORD_CONSTANTS } from '../constants/discord.constant';
 import { DiscordCommandOptions } from '../types/discord.types';
 
 export const Command = (options: DiscordCommandOptions): MethodDecorator => {

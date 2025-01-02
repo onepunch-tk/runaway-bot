@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { DiscordModule } from './discord/discord.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { ClanController } from './clan/clan.controller';
-import { ClanService } from './clan/clan.service';
 import { CommonModule } from './common/common.module';
 
 import * as Joi from 'joi';
+import { DiscoveryService } from '@nestjs/core';
+import { AppService } from './app.service';
+import { ClanModule } from './clan/clan.module';
 
 @Module({
   imports: [
@@ -21,11 +22,11 @@ import * as Joi from 'joi';
         // DISCORD_CALLBACK_URL: Joi.string().required(),
       }),
     }),
-    DiscordModule,
     AuthModule,
+    DiscordModule,
+    ClanModule,
     CommonModule,
   ],
-  controllers: [ClanController],
-  providers: [ClanService],
+  providers: [DiscoveryService, AppService],
 })
 export class AppModule {}

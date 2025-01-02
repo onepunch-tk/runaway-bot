@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseCommandHandler } from './base-command.handler';
+import { BaseCommandService } from './base-command.service';
 import { CommandInteraction, GuildMemberRoleManager } from 'discord.js';
 import { CommandContext } from '../types/discord.types';
 
 @Injectable()
-export class SlashCommandHandler extends BaseCommandHandler {
-  private readonly logger = new Logger(SlashCommandHandler.name);
+export class InteractionService extends BaseCommandService {
+  private readonly logger = new Logger(InteractionService.name);
 
   async handleInteraction(interaction: CommandInteraction) {
     try {

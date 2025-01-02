@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandContext } from 'src/discord/commands/types/discord.types';
+import { CommandContext } from 'src/discord/types/discord.types';
 import {
   DISCORD_CONSTANTS,
   DiscordRole,
@@ -14,18 +14,18 @@ import {
   MESSAGE_ACTiON,
   MESSAGE_CONSTANTS,
 } from './constants/message.constant';
-import { EmbedHandler } from '../common/handlers/embed.handler';
+import { EmbedServices } from '../common/services/embed.services';
 
 @Injectable()
 export class ClanService {
-  constructor(private readonly embedHandler: EmbedHandler) {}
+  constructor(private readonly embedServices: EmbedServices) {}
 
   async getClanMembers(context: CommandContext) {
     const interaction = context.interaction as ChatInputCommandInteraction;
     const guild = interaction.guild;
 
     if (!guild) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: '❌ 조회 실패',
         description: '서버 정보를 가져올 수 없습니다.',
       });
@@ -94,7 +94,7 @@ export class ClanService {
         },
       ];
 
-      await this.embedHandler.sendSuccessEmbed(interaction, {
+      await this.embedServices.sendSuccessEmbed(interaction, {
         color: '#4B9EFF',
         title: '📋 클랜 멤버 현황',
         description: '현재 등급별 클랜 멤버 목록입니다.',
@@ -103,7 +103,7 @@ export class ClanService {
       });
     } catch (error) {
       console.error('Error fetching clan members:', error);
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: '❌ 조회 실패',
         description: '멤버 목록을 불러오는 중 오류가 발생했습니다.',
       });
@@ -140,7 +140,7 @@ export class ClanService {
 
     try {
       await this.updateMemberRoles(targetMember, MESSAGE_ACTiON.REGISTER);
-      await this.embedHandler.sendSuccessEmbed(interaction, {
+      await this.embedServices.sendSuccessEmbed(interaction, {
         color: config.successColor as ColorResolvable,
         title: config.successTitle,
         description: [
@@ -159,7 +159,7 @@ export class ClanService {
       });
     } catch (error) {
       console.error(error);
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config.failTitle,
         description: `역할 부여 중 오류가 발생했습니다: ${error.message}`,
       });
@@ -177,7 +177,7 @@ export class ClanService {
       targetMember.roles.cache.has(DiscordRole.CLAN_SERVER_ADMIN) ||
       targetMember.roles.cache.has(DiscordRole.CLAN_MASTER)
     ) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config?.title || '등업 실패',
         description: `${targetUser.globalName}님의 등급을 변경할 수 없습니다.`,
       });
@@ -186,7 +186,7 @@ export class ClanService {
 
     // 2. 이미 관리자인 경우 체크
     if (targetMember.roles.cache.has(DiscordRole.CLAN_ADMIN)) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config?.title || '등업 실패',
         description: `${targetUser.globalName}님은 이미 클랜 관리자입니다.`,
       });
@@ -195,7 +195,7 @@ export class ClanService {
 
     // 3. 클랜원이 아닌 경우 체크
     if (!targetMember.roles.cache.has(DiscordRole.CLAN)) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config?.title || '등업 실패',
         description: `${targetUser.globalName}님은 클랜원이 아닙니다.`,
       });
@@ -208,7 +208,7 @@ export class ClanService {
       await targetMember.roles.add(DiscordRole.CLAN_ADMIN);
 
       // 성공 메시지 전송
-      await this.embedHandler.sendSuccessEmbed(interaction, {
+      await this.embedServices.sendSuccessEmbed(interaction, {
         color: (config?.successColor as ColorResolvable) || '#00ff00',
         title: config?.successTitle || '등업 성공',
         description: [
@@ -228,7 +228,7 @@ export class ClanService {
       });
     } catch (error) {
       console.error(error);
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config?.failTitle || '등업 실패',
         description: `역할 변경 중 오류가 발생했습니다: ${error.message}`,
       });
@@ -266,7 +266,7 @@ export class ClanService {
     try {
       const currentRole = this.getRoleName(targetMember);
       await this.updateMemberRoles(targetMember, MESSAGE_ACTiON.DELETE);
-      await this.embedHandler.sendSuccessEmbed(interaction, {
+      await this.embedServices.sendSuccessEmbed(interaction, {
         color: config.successColor as ColorResolvable,
         title: config.successTitle,
         description: [
@@ -285,7 +285,7 @@ export class ClanService {
       });
     } catch (error) {
       console.error(error);
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config.failTitle,
         description: `역할 제거 중 오류가 발생했습니다: ${error.message}`,
       });
@@ -307,7 +307,7 @@ export class ClanService {
       ];
 
     if (actionType === MESSAGE_ACTiON.REGISTER && hasAnyRole) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config.title,
         description: `${targetUser.globalName}님은 이미 클랜 멤버입니다.`,
         fields: [
@@ -322,7 +322,7 @@ export class ClanService {
     }
 
     if (actionType === MESSAGE_ACTiON.DELETE && !hasAnyRole) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title: config.title,
         description: `${targetUser.globalName}님은 클랜 멤버가 아닙니다.`,
       });
@@ -347,7 +347,7 @@ export class ClanService {
         : MESSAGE_CONSTANTS.CLAN.DELETE.title;
 
     if (hasAdminRole) {
-      await this.embedHandler.sendErrorEmbed(interaction, {
+      await this.embedServices.sendErrorEmbed(interaction, {
         title,
         description: `${targetUser.globalName}님은 관리자 역할을 가지고 있어 변경이 불가능합니다.`,
       });
