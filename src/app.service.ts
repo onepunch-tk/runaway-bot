@@ -10,6 +10,7 @@ import {
 import { MessageService } from './discord/services/message.service';
 import { InteractionService } from './discord/services/interaction.service';
 import { UtilityService } from './utility/utility.service';
+import { MusicService } from './music/music.service';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -22,6 +23,7 @@ export class AppService implements OnModuleInit {
     private readonly messageService: MessageService,
     private readonly interactionService: InteractionService,
     private readonly utilityService: UtilityService,
+    private readonly musicService: MusicService,
   ) {
     this.client = new Client({
       intents: Object.values(DISCORD_CONSTANTS.INTENTS),
@@ -49,6 +51,7 @@ export class AppService implements OnModuleInit {
 
       await this.registerCommands(this.client.application.id);
       await this.setupEventHandlers();
+      await this.musicService.test(this.client);
     });
   }
 
