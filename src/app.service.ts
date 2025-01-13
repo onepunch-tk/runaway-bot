@@ -51,7 +51,6 @@ export class AppService implements OnModuleInit {
 
       await this.registerCommands(this.client.application.id);
       await this.setupEventHandlers();
-      await this.musicService.test(this.client);
     });
   }
 

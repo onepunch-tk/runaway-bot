@@ -19,7 +19,7 @@ export class UtilityService {
       welcomeChannelId,
     ) as TextChannel;
 
-    if (!welcomeChannel?.isTextBased) return;
+    if (!welcomeChannel?.isTextBased()) return;
 
     const welcomeFields = [
       {
@@ -58,16 +58,21 @@ export class UtilityService {
         inline: false,
       },
     ];
-    await this.embedService.sendSuccessEmbedToChannel(welcomeChannel, {
-      color: '#4B9EFF',
-      title: `✨ ${member.user.globalName}님 환영합니다!`,
-      description: [
-        `${member.guild.name} 클랜 서버 놀러오신 것을 진심으로 환영합니다! 🎉`,
-        '',
-        '아래 안내사항을 확인하시고 즐거운 시간 보내세요!',
-      ].join('\n'),
-      fields: welcomeFields,
-      thumbnail: member.user.displayAvatarURL({ size: 256 }),
-    });
+
+    await this.embedService.sendSuccessEmbedToChannel(
+      member.guild, // Guild
+      welcomeChannelId, // Channel ID
+      {
+        color: '#4B9EFF',
+        title: `✨ ${member.user.globalName}님 환영합니다!`,
+        description: [
+          `${member.guild.name} 클랜 서버 놀러오신 것을 진심으로 환영합니다! 🎉`,
+          '',
+          '아래 안내사항을 확인하시고 즐거운 시간 보내세요!',
+        ].join('\n'),
+        fields: welcomeFields,
+        thumbnail: member.user.displayAvatarURL({ size: 256 }),
+      },
+    );
   }
 }
