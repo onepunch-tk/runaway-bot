@@ -8,6 +8,7 @@ import { DiscoveryService } from '@nestjs/core';
 import { AppService } from './app.service';
 import { ClanModule } from './clan/clan.module';
 import { UtilityModule } from './utility/utility.module';
+import { MusicModule } from './music/music.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UtilityModule } from './utility/utility.module';
         DISCORD_APP_ID: Joi.string().required(),
         DISCORD_BOT_TOKEN: Joi.string().required(),
         DISCORD_PUBLIC_KEY: Joi.string().required(),
+        YOUTUBE_DATA_API_KEY: Joi.string().required(),
         /* 필요하다면 사용 */
         // DISCORD_CLIENT_SECRET: Joi.string().required(),
         // DISCORD_CALLBACK_URL: Joi.string().required(),
@@ -26,6 +28,7 @@ import { UtilityModule } from './utility/utility.module';
     DiscordModule,
     ClanModule,
     UtilityModule,
+    MusicModule,
   ],
   providers: [DiscoveryService, AppService],
 })

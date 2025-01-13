@@ -1,14 +1,18 @@
+// embed.services.ts
+
 import {
+  ChannelType,
   ChatInputCommandInteraction,
   ColorResolvable,
   EmbedBuilder,
+  Guild,
   TextChannel,
 } from 'discord.js';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class EmbedServices {
-  // 공통 임베드 생성 로직
+  // Common embed creation logic
   private createEmbed(config: {
     color: ColorResolvable;
     title: string;
@@ -56,15 +60,16 @@ export class EmbedServices {
     },
   ) {
     const embed = this.createEmbed({
-      color: '#FFA500',
+      color: '#FF0000', // Use a consistent error color, e.g., red
       ...config,
     });
     await interaction.reply({ embeds: [embed] });
   }
 
-  // 채널 전송용 메소드
+  // Method to send embeds to channels by channel ID
   async sendSuccessEmbedToChannel(
-    channel: TextChannel,
+    guild: Guild,
+    channelId: string,
     config: {
       color: ColorResolvable;
       title: string;
@@ -74,8 +79,46 @@ export class EmbedServices {
     },
     content?: string,
   ) {
+    const channel = guild.channels.cache.get(channelId);
+
+    // VoiceChannel도 메시지를 보낼 수 있도록 체크 조건 수정
+    if (!channel || (!channel.isTextBased() && !channel.isVoiceBased())) {
+      console.error(
+        `Channel with ID ${channelId} not found or cannot send messages.`,
+      );
+      return;
+    }
+
     const embed = this.createEmbed(config);
-    return await channel.send({
+    await channel.send({
+      content: content,
+      embeds: [embed],
+    });
+  }
+
+  async sendErrorEmbedToChannel(
+    guild: Guild,
+    channelId: string,
+    config: {
+      title: string;
+      description: string;
+      fields?: { name: string; value: string; inline?: boolean }[];
+    },
+    content?: string,
+  ) {
+    const channel = guild.channels.cache.get(channelId) as TextChannel;
+    if (!channel || ChannelType.GuildText) {
+      console.error(
+        `Text channel with ID ${channelId} not found or is not a text channel.`,
+      );
+      return;
+    }
+
+    const embed = this.createEmbed({
+      color: '#FF0000', // Use a consistent error color, e.g., red
+      ...config,
+    });
+    await channel.send({
       content: content,
       embeds: [embed],
     });
